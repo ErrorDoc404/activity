@@ -34,9 +34,6 @@ module.exports = {
       if (!player) return message.channel.send(`❌ | **Nothing is playing right now...**`);
 
       // try{
-        if (SearchString.match(client.Lavasfy.spotifyPattern)){
-          return message.channel.send('Spotify plugins is currently disable. please wait for future updates');
-        }else {
           // Connect to the voice channel.
           if (player.state != "CONNECTED") await player.connect();
 
@@ -52,7 +49,6 @@ module.exports = {
             player.queue.add(Searched.tracks[0]);
             if (!player.playing && !player.paused && !player.queue.size) player.play();
           }
-        }
 
         if(player.queue.length == 1){
           content = client.musicMessage[message.guild.id].content + `\n**[ ${player.queue.length} Songs in Queue ]**`;

@@ -7,8 +7,8 @@ const mongoose = require('mongoose');
 const GuildConfig = require("../mongoose/database/schemas/GuildConfig");
 const play = require('../music/play.js');
 const { Manager } = require("erela.js");
-const { LavasfyClient } = require("lavasfy");
 const deezer = require("erela.js-deezer");
+const Spotify = require("erela.js-spotify");
 const apple = require("erela.js-apple");
 const facebook = require("erela.js-facebook");
 
@@ -37,30 +37,35 @@ class DiscordActivityBot extends Client {
       var client = this;
 
       // Lavasfy
-      this.Lavasfy = new LavasfyClient(
-        {
-          clientID: this.config.Spotify.ClientID,
-          clientSecret: this.config.Spotify.ClientSecret,
-          playlistLoadLimit: 100,
-          audioOnlyResults: true,
-          autoResolve: true,
-          useSpotifyMetadata: true
-        },
-        [
-          {
-            id: this.config.lavalink.id,
-            host: this.config.lavalink.host,
-            port: this.config.lavalink.port,
-            password: this.config.lavalink.pass,
-          },
-        ]
-      );
+      // this.Lavasfy = new LavasfyClient(
+      //   {
+      //     clientID: this.config.Spotify.ClientID,
+      //     clientSecret: this.config.Spotify.ClientSecret,
+      //     playlistLoadLimit: 100,
+      //     audioOnlyResults: true,
+      //     autoResolve: true,
+      //     useSpotifyMetadata: true
+      //   },
+      //   [
+      //     {
+      //       id: this.config.lavalink.id,
+      //       host: this.config.lavalink.host,
+      //       port: this.config.lavalink.port,
+      //       password: this.config.lavalink.pass,
+      //     },
+      //   ]
+      // );
 
       // Initiate the Manager with some options and listen to some events.
       this.manager = new Manager({
+        autoPlay: true,
         // plugins
         plugins: [
           new deezer(),
+          new Spotify({
+            clientID: this.config.Spotify.ClientID,
+            clientSecret: this.config.Spotify.ClientSecret
+          }),
           new apple(),
           new facebook(),
         ],
@@ -84,7 +89,7 @@ class DiscordActivityBot extends Client {
             musicMsg.edit({content: content});
           };
           const musicEmbed = musicMsg.embeds[0];
-          const thumbnail = track.thumbnail.replace('default', 'hqdefault');
+          const thumbnail = track.thumbnail ? track.thumbnail.replace('default', 'hqdefault') : 'https://c.tenor.com/eDVrPUBkx7AAAAAd/anime-sleepy.gif';
           const msgEmbed = {
               title: track.title,
               color: 0xd43790,
