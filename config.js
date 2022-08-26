@@ -20,10 +20,10 @@ module.exports = {
     // lavalink server
     lavalink: {
       id: "KartaDharta",
-      host: 'node1.kartadharta.xyz',
-      port: 443,
+      host: 'kartadharta.xyz',
+      port: 3001,
       password: 'kdlavalink',
-      secure: true,
+      secure: false,
     },
 
     Spotify: {
